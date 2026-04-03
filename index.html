@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BrawlForge Arena</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="app-shell">
+    <canvas id="game-canvas"></canvas>
+
+    <div id="ui-layer">
+      <section id="menu-screen" class="screen">
+        <div class="hero-panel">
+          <div class="hero-copy">
+            <p class="eyebrow">Forge-born arena combat</p>
+            <h1>BrawlForge</h1>
+            <p class="hero-text">
+              Pick a brawler, survive the gem storm, and spend your winnings on skins and upgrades between matches.
+            </p>
+          </div>
+
+          <div class="profile-strip">
+            <div class="profile-card">
+              <span class="profile-label">Coins</span>
+              <strong id="menu-coins">0</strong>
+            </div>
+            <div class="profile-card">
+              <span class="profile-label">Mode</span>
+              <strong>Gem Grab</strong>
+            </div>
+            <div class="profile-card">
+              <span class="profile-label">Objective</span>
+              <strong>Reach 10 gems, hold for 15s</strong>
+            </div>
+          </div>
+
+          <div id="brawler-grid" class="brawler-grid"></div>
+
+          <div class="menu-actions">
+            <button id="play-button" class="primary-button">Start Match</button>
+            <button id="shop-button" class="secondary-button">Open Forge Shop</button>
+            <button id="reset-save-button" class="ghost-button">Reset Save</button>
+          </div>
+
+          <p class="controls-hint">
+            WASD move. Mouse aim. Left click fire. Space super. Shift dash.
+          </p>
+        </div>
+      </section>
+
+      <section id="hud" class="hidden">
+        <div class="hud-top">
+          <div class="hud-cluster player-cluster">
+            <div class="chip">
+              <span class="chip-label">Health</span>
+              <div class="bar-shell">
+                <div id="health-fill" class="bar-fill health-fill"></div>
+                <span id="health-text" class="bar-text">0 / 0</span>
+              </div>
+            </div>
+
+            <div class="chip ammo-chip">
+              <span class="chip-label">Ammo</span>
+              <div id="ammo-row" class="ammo-row"></div>
+              <div id="reload-text" class="subtle-text hidden">Reloading</div>
+            </div>
+          </div>
+
+          <div class="hud-center">
+            <div id="timer-chip" class="timer-chip">03:00</div>
+            <div id="objective-chip" class="objective-chip">Collect gems from the center forge.</div>
+            <div id="countdown-chip" class="countdown-chip hidden">Countdown active</div>
+          </div>
+
+          <div class="hud-cluster score-cluster">
+            <div class="chip super-chip">
+              <span class="chip-label">Super</span>
+              <div class="bar-shell">
+                <div id="super-fill" class="bar-fill super-fill"></div>
+                <span id="super-text" class="bar-text">Charging</span>
+              </div>
+            </div>
+
+            <div class="chip gem-chip">
+              <span class="chip-label">Gems</span>
+              <strong id="player-gems">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud-side">
+          <canvas id="minimap" width="150" height="150"></canvas>
+          <div id="buff-row" class="buff-row"></div>
+        </div>
+
+        <div id="scoreboard" class="scoreboard"></div>
+        <div id="kill-feed" class="kill-feed"></div>
+
+        <div id="respawn-panel" class="respawn-panel hidden">
+          <span class="respawn-label">Reforging in</span>
+          <strong id="respawn-count">3</strong>
+        </div>
+
+        <div id="crosshair" class="crosshair">
+          <div class="crosshair-core"></div>
+          <div id="hitmarker" class="hitmarker"></div>
+        </div>
+      </section>
+
+      <section id="shop-screen" class="modal hidden">
+        <div class="modal-card shop-card">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow">Progression</p>
+              <h2>Forge Shop</h2>
+            </div>
+            <button id="close-shop-button" class="ghost-button">Close</button>
+          </div>
+
+          <div class="shop-summary">
+            <div class="profile-card">
+              <span class="profile-label">Coins</span>
+              <strong id="shop-coins">0</strong>
+            </div>
+            <div class="profile-card">
+              <span class="profile-label">Selected Brawler</span>
+              <strong id="shop-selected-name">Tank</strong>
+            </div>
+          </div>
+
+          <div id="shop-tabs" class="shop-tabs"></div>
+
+          <div class="shop-columns">
+            <div>
+              <h3>Upgrades</h3>
+              <div id="upgrade-grid" class="shop-grid"></div>
+            </div>
+
+            <div>
+              <h3>Skins</h3>
+              <div id="skin-grid" class="shop-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="game-over" class="screen hidden">
+        <div class="modal-card results-card">
+          <p class="eyebrow">Match report</p>
+          <h2 id="game-over-title">Victory</h2>
+          <p id="game-over-subtitle" class="hero-text"></p>
+
+          <div id="results-grid" class="results-grid"></div>
+
+          <div class="menu-actions">
+            <button id="play-again-button" class="primary-button">Play Again</button>
+            <button id="back-to-menu-button" class="secondary-button">Back To Menu</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="toast" class="toast hidden"></div>
+      <div id="floating-layer"></div>
+    </div>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
